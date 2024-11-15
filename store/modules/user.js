@@ -46,8 +46,10 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid).then(res => {
-          setToken(res.token)
-          commit('SET_TOKEN', res.token)
+          // setToken(res.token)
+          // commit('SET_TOKEN', res.token)
+					setToken(res.data.access_token)
+					commit('SET_TOKEN', res.data.access_token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -70,6 +72,7 @@ const user = {
           }
           commit('SET_NAME', username)
           commit('SET_AVATAR', avatar)
+					uni.setStorageSync('user', user)
           resolve(res)
         }).catch(error => {
           reject(error)

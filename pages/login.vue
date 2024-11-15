@@ -14,13 +14,13 @@
         <view class="iconfont icon-password icon"></view>
         <input v-model="loginForm.password" type="password" class="input" placeholder="请输入密码" maxlength="20" />
       </view>
-      <view class="input-item flex align-center" style="width: 60%;margin: 0px;" v-if="captchaEnabled">
+      <!-- <view class="input-item flex align-center" style="width: 60%;margin: 0px;" v-if="captchaEnabled">
         <view class="iconfont icon-code icon"></view>
         <input v-model="loginForm.code" type="number" class="input" placeholder="请输入验证码" maxlength="4" />
         <view class="login-code"> 
           <image :src="codeUrl" @click="getCode" class="login-code-img"></image>
         </view>
-      </view>
+      </view> -->
       <view class="action-btn">
         <button @click="handleLogin" class="login-btn cu-btn block bg-blue lg round">登录</button>
       </view>
@@ -58,7 +58,7 @@
       }
     },
     created() {
-      this.getCode()
+      // this.getCode()
     },
     methods: {
       // 用户注册
@@ -91,9 +91,11 @@
           this.$modal.msgError("请输入您的账号")
         } else if (this.loginForm.password === "") {
           this.$modal.msgError("请输入您的密码")
-        } else if (this.loginForm.code === "" && this.captchaEnabled) {
-          this.$modal.msgError("请输入验证码")
-        } else {
+        }
+				// else if (this.loginForm.code === "" && this.captchaEnabled) {
+    //       this.$modal.msgError("请输入验证码")
+    //     }
+				else {
           this.$modal.loading("登录中，请耐心等待...")
           this.pwdLogin()
         }
@@ -105,7 +107,7 @@
           this.loginSuccess()
         }).catch(() => {
           if (this.captchaEnabled) {
-            this.getCode()
+            // this.getCode()
           }
         })
       },
@@ -113,7 +115,7 @@
       loginSuccess(result) {
         // 设置用户信息
         this.$store.dispatch('GetInfo').then(res => {
-          this.$tab.reLaunch('/pages/index')
+          this.$tab.reLaunch('/pages/main/message')
         })
       }
     }

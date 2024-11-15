@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "node_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
   "pages": [{
     "path": "pages/login",
     "style": {
@@ -14,6 +17,21 @@
     "style": {
       "navigationBarTitleText": "若依移动端框架",
       "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/main/message",
+    "style": {
+      "navigationBarTitleText": "消息"
+    }
+  }, {
+    "path": "pages/main/addressBook",
+    "style": {
+      "navigationBarTitleText": "通讯录"
+    }
+  }, {
+    "path": "pages/main/dynamics",
+    "style": {
+      "navigationBarTitleText": "动态"
     }
   }, {
     "path": "pages/work/index",
@@ -70,23 +88,47 @@
     "style": {
       "navigationBarTitleText": "浏览文本"
     }
+  }, {
+    "path": "pages/chat/message/chatUserMessage",
+    "style": {
+      "navigationBarTitleText": "消息对话"
+    }
   }],
   "tabBar": {
     "color": "#000000",
     "selectedColor": "#000000",
     "borderStyle": "white",
     "backgroundColor": "#ffffff",
-    "list": [{
-        "pagePath": "pages/index",
-        "iconPath": "static/images/tabbar/home.png",
-        "selectedIconPath": "static/images/tabbar/home_.png",
-        "text": "首页"
-      }, {
-        "pagePath": "pages/work/index",
-        "iconPath": "static/images/tabbar/work.png",
-        "selectedIconPath": "static/images/tabbar/work_.png",
-        "text": "工作台"
-      }, {
+    "list": [
+			// {
+   //      "pagePath": "pages/index",
+   //      "iconPath": "static/images/tabbar/home.png",
+   //      "selectedIconPath": "static/images/tabbar/home_.png",
+   //      "text": "首页"
+   //    }, 
+			// {
+   //      "pagePath": "pages/work/index",
+   //      "iconPath": "static/images/tabbar/work.png",
+   //      "selectedIconPath": "static/images/tabbar/work_.png",
+   //      "text": "工作台"
+   //    },
+			{
+				"pagePath": "pages/main/message",
+				"iconPath": "static/images/tabbar/message.png",
+				"selectedIconPath": "static/images/tabbar/message_.png",
+				"text": "消息"
+			}, {
+				"pagePath": "pages/main/addressBook",
+				"iconPath": "static/images/tabbar/addressBook.png",
+				"selectedIconPath": "static/images/tabbar/addressBook_.png",
+				"text": "通讯录"
+			},
+			{
+				"pagePath": "pages/main/dynamics",
+				"iconPath": "static/images/tabbar/dynamics.png",
+				"selectedIconPath": "static/images/tabbar/dynamics_.png",
+				"text": "动态"
+			}, {
         "pagePath": "pages/mine/index",
         "iconPath": "static/images/tabbar/mine.png",
         "selectedIconPath": "static/images/tabbar/mine_.png",

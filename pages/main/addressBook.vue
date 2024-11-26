@@ -5,7 +5,7 @@
 				<u-index-item>
 					<view class="list-cell" v-for="(cell, index) in item" :key="index" @touchstart="userTouchstart(cell)" @touchmove="userTouchmove()" @touchend="userTouchend(cell)">
 						<u-avatar slot="icon" shape="square" size="35" :src="cell.relationUser.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
-						<view style="margin-top: 4px; margin-left: 4px;">{{cell.relationUserRemark}}</view>
+						<view style="margin-top: 4px; margin-left: 4px;">{{cell.relationUserRemark ? cell.relationUserRemark : cell.relationUser.nickName }}</view>
 					</view>
 				</u-index-item>
 			</template>
@@ -54,10 +54,10 @@
 				var self = this;
 				this.userTimeOutEvent = setTimeout(function() {
 					self.userLongPress(item);
-				}, 700); // 这里设置定时器，定义长按500毫秒触发长按事件
+				}, 700); // 这里设置定时器，定义长按700毫秒触发长按事件
 				return false;
 			},
-			userTouchend(item) {	// 手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
+			userTouchend(item) {	// 手释放，如果在700毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
 				var that = this;
 				clearTimeout(this.userTimeOutEvent); 	// 清除定时器
 				if (this.userTimeOutEvent != null) {	// 这里写要执行的内容（如onclick事件）
@@ -84,7 +84,8 @@
 				};
 				let data = JSON.stringify(a);
 				uni.navigateTo({
-					url: '../chat/message/chatUserMessage?data=' + data
+					// url: '../chat/message/chatUserMessage?data=' + data
+					url: '../chat/message/chatUserMessage1?data=' + data
 				});
 			},
 		},

@@ -90,6 +90,9 @@
 </template>
 
 <script>
+	import {
+		listChatUserMessageVo
+	} from "@/api/chat/chatUserMessage.js";
 	export default {
 		data() {
 			return {
@@ -284,6 +287,7 @@
 				],
 				backLocation: null,
 				loginUser: null,
+				relationUserId: null,
 			};
 		},
 		methods: {
@@ -673,6 +677,37 @@
 					urls: imgList,
 				});
 			},
+			getChatUserMessageList() {
+				let queryParams = {
+					params: {
+						loginUserId: this.loginUser.userId,
+						relationUserId: this.relationUserId,
+					}
+				};
+				listChatUserMessageVo(queryParams).then(res => {
+					// console.log(JSON.stringify(res));
+					if (200 == res.code) {
+						this.messageList = [];
+						for (var i = 0; i < res.rows.length; i++) {
+							var everyMessage = {
+								anmitionPlay: false,
+								content: res.rows[i].messageContent,
+								contentType: 1,
+								createTime: res.rows[i].createTime,
+								fromUserHeadImg: res.rows[i].fromUser.avatar,
+								fromUserId: res.rows[i].fromUserId,
+								hasBeenSentId: i,
+								isItMe: (this.loginUser.userId == res.rows[i].fromUserId ? true : false)
+							};
+							this.messageList.push(everyMessage);
+						}
+					} else {
+						this.$modal.msgError(res.msg);
+					}
+				}).catch(err => {
+					this.$modal.msgError(err);
+				});
+			},
 		},
 		onPageScroll(e) {
 
@@ -700,9 +735,13 @@
 					title: dataJson.relationUserRemark
 			});
 			this.loginUser = uni.getStorageSync('user');
+			this.relationUserId = dataJson.relationUserId;
 		},
 		onReady() {
-		}
+		},
+		onShow() {
+			this.getChatUserMessageList();
+		},
 	};
 </script>
 

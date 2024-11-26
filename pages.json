@@ -93,6 +93,11 @@
     "style": {
       "navigationBarTitleText": "消息对话"
     }
+  }, {
+    "path": "pages/chat/message/chatUserMessage1",
+    "style": {
+      "navigationBarTitleText": "消息对话(新)"
+    }
   }],
   "tabBar": {
     "color": "#000000",

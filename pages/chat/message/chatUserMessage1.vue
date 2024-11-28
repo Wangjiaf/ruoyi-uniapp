@@ -19,10 +19,11 @@
 				</div>
 			</div>
 			<u-button type="primary" size="small" @click="send" text="发送" style="width: 40px; margin-right: 1%;"></u-button>
+			<u-input v-model="textarea" placeholder="请输入内容" style="background-color: azure;"></u-input>
 			<!-- <u--button @click="send" class="el-button">
 				<div style="margin-top: -5px; font-size: 15px;">发送</div>
 			</u--button> -->
-			<u-textarea v-model="textarea" placeholder="请输入内容" :safeAreaInsetBottom="true"></u-textarea>
+			<!-- <u-textarea v-model="textarea" placeholder="请输入内容" :safeAreaInsetBottom="true"></u-textarea> -->
 			<!-- <div class="message_input">
 				<u--input type="textarea" v-model="textarea" autofocus :autosize="{ minRows: 7, maxRows: 7 }" resize="none" @keyup.enter="keyDown($event)"></u--input>
 				<div style="width: 100%; display: flex; align-items: center; justify-content: flex-end; height: 60px;">
@@ -74,6 +75,7 @@
 				loginUser: null,
 				relationUserId: null,
 				relationUserRemark: null,
+				heartbeatTimer: null,
 			};
 		},
 		onShow() {
@@ -157,8 +159,6 @@
 						this.messageList.push(newMessage);
 						this.scrollToBottom();
 					}
-				}).catch(err => {
-					this.$modal.msgError(err);
 				});
 				this.textarea = "";
 			},
@@ -216,16 +216,35 @@
 				});
 				this.websocketTask.onError((error) => {
 					console.error('WebSocket连接发生错误', JSON.stringify(error));
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					this.initWebSocket();
 				});
 				this.websocketTask.onClose(() => {
 					console.log('WebSocket已关闭');
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					this.initWebSocket();
 				});
 			},
 			// 关闭WebSocket连接
 			closeWebSocket() {
 				if (this.websocketTask) {
 					this.websocketTask.close();
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
 				}
+			},
+			// 开启心跳定时器
+			startHeartbeat() {
+				var self = this;
+				this.heartbeatTimer = setTimeout(function() {
+					self.sendHeartbeat();
+				}, 3000);	// 每3秒发送一次心跳消息
+			},
+			// 发送心跳消息
+			sendHeartbeat() {
+				console.log('WebSocket发送消息');
+				this.websocketTask.send({
+					data: '0'
+				});
 			},
 		},
 	};
@@ -282,7 +301,8 @@
 			}
 			.message_area {
 				width: 100%;
-				height: calc(100% - 120px);
+				// height: calc(100% - 180px);
+				height: 90%;
 				overflow-y: auto;
 				.message_item {
 					display: flex;

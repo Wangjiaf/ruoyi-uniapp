@@ -96,7 +96,12 @@
   }, {
     "path": "pages/chat/message/chatUserMessage1",
     "style": {
-      "navigationBarTitleText": "消息对话(新)"
+      "navigationBarTitleText": "消息对话"
+    }
+  }, {
+    "path": "pages/chat/addressBook/newFriend",
+    "style": {
+      "navigationBarTitleText": "添加新朋友"
     }
   }],
   "tabBar": {

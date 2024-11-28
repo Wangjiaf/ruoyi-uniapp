@@ -1,11 +1,26 @@
 <template>
 	<view class="u-page">
-		<u-index-list :index-list="userIndexList">
+		<u-index-list>
+			<u-index-item>
+				<view class="list-cell" @click="addNewFriend()">
+					<u-avatar slot="icon" shape="square" size="35" src="../../static/images/chat/newFriend.png" customStyle="margin: -3px 5px -3px 0"></u-avatar>
+					<view style="margin-top: 4px; margin-left: 4px;">添加新朋友</view>
+				</view>
+			</u-index-item>
+			<u-index-item>
+				<view class="list-cell" @click="addNewGroup()">
+					<u-avatar slot="icon" shape="square" size="35" src="../../static/images/chat/newGroup.png" customStyle="margin: -3px 5px -3px 0"></u-avatar>
+					<view style="margin-top: 4px; margin-left: 4px;">创建新群聊</view>
+				</view>
+			</u-index-item>
+		</u-index-list>
+		<!-- <u-index-list :index-list="userIndexList"> -->
+		<u-index-list>
 			<template v-for="(item, index) in userList">
 				<u-index-item>
 					<view class="list-cell" v-for="(cell, index) in item" :key="index" @touchstart="userTouchstart(cell)" @touchmove="userTouchmove()" @touchend="userTouchend(cell)">
 						<u-avatar slot="icon" shape="square" size="35" :src="cell.relationUser.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
-						<view style="margin-top: 4px; margin-left: 4px;">{{cell.relationUserRemark ? cell.relationUserRemark : cell.relationUser.nickName }}</view>
+						<view style="margin-top: 4px; margin-left: 4px;">{{cell.relationUserRemark ? cell.relationUserRemark : cell.relationUser.nickName}}</view>
 					</view>
 				</u-index-item>
 			</template>
@@ -87,6 +102,14 @@
 					// url: '../chat/message/chatUserMessage?data=' + data
 					url: '../chat/message/chatUserMessage1?data=' + data
 				});
+			},
+			addNewFriend() {
+				uni.navigateTo({
+					url: '../chat/addressBook/newFriend'
+				});
+			},
+			addNewGroup() {
+				console.log("addNewGroup");
 			},
 		},
 	}

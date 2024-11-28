@@ -9,15 +9,6 @@ export function listChatUserRelation(query) {
   })
 }
 
-// 查询好友关系视图列表
-export function listChatUserRelationVo(query) {
-  return request({
-    url: '/chat/chatUserRelation/listVo',
-    method: 'get',
-    params: query
-  })
-}
-
 // 查询好友关系详细
 export function getChatUserRelation(id) {
   return request({
@@ -49,5 +40,23 @@ export function delChatUserRelation(id) {
   return request({
     url: '/chat/chatUserRelation/' + id,
     method: 'delete'
+  })
+}
+
+// 查询好友关系视图列表
+export function listChatUserRelationVo(query) {
+  return request({
+    url: '/chat/chatUserRelation/listVo',
+    method: 'get',
+    params: query
+  })
+}
+
+// 添加好友
+export function addFriend(data) {
+  return request({
+    url: '/chat/chatUserRelation/addFriend',
+    method: 'post',
+    data: data
   })
 }

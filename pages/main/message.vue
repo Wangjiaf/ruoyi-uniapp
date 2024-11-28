@@ -53,7 +53,7 @@
 		</u-cell-group> -->
 		<u-list>
 			<u-list-item v-for="(item, index) in chatTipList" style="background-color: #ffffff;">
-				<u-cell :title="item.tipFromChatUserRelation.relationUserRemark ? item.tipFromChatUserRelation.relationUserRemark : item.tipFromUser.nickName" :label="item.tipContent" @click="resetChatTipCount_goToChatMessage(item)" v-if="'P2P' == item.chatType">
+				<u-cell :title="item.tipFromChatUserRelation && item.tipFromChatUserRelation.relationUserRemark ? item.tipFromChatUserRelation.relationUserRemark : item.tipFromUser.nickName" :label="item.tipContent" @click="resetChatTipCount_goToChatMessage(item)" v-if="'P2P' == item.chatType">
 					<u-avatar slot="icon" shape="square" size="45" :src="item.tipFromUser.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
 					<text slot="value" class="u-slot-value">{{item.createTime}}</text>
 					<text slot="value" class="u-slot-value" style="min-width: 18px; min-height: 18px; background-color: red; border-radius: 50%; color: aliceblue; text-align: center;" v-if="0 != item.unReadCount">{{item.unReadCount}}</text>
@@ -74,7 +74,8 @@
 				chatTipList: [],
 				loginUser: null,
 				chatTipTimeOutEvent: null,
-				websocketTask: null
+				websocketTask: null,
+				heartbeatTimer: null,
 			}
 		},
 		onShow() {
@@ -156,7 +157,7 @@
 			gotoChatUserMessage(chatTip) {
 				let a = {
 					relationUserId: chatTip.tipFromId,
-					relationUserRemark: chatTip.tipFromChatUserRelation.relationUserRemark ? chatTip.tipFromChatUserRelation.relationUserRemark : chatTip.tipFromUser.nickName,
+					relationUserRemark: chatTip.tipFromChatUserRelation && chatTip.tipFromChatUserRelation.relationUserRemark ? chatTip.tipFromChatUserRelation.relationUserRemark : chatTip.tipFromUser.nickName,
 					backLocation: 'pages/main/message'
 				};
 				let data = JSON.stringify(a);
@@ -187,6 +188,7 @@
 				});
 				this.websocketTask.onOpen(() => {
 					console.log('WebSocket连接已打开');
+					this.startHeartbeat();
 					// 这里可以发送消息给服务器
 					// this.websocketTask.send({
 					// 	data: 'Hello, Server!'
@@ -199,16 +201,35 @@
 				});
 				this.websocketTask.onError((error) => {
 					console.error('WebSocket连接发生错误', JSON.stringify(error));
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					this.initWebSocket();
 				});
 				this.websocketTask.onClose(() => {
 					console.log('WebSocket已关闭');
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					this.initWebSocket();
 				});
 			},
 			// 关闭WebSocket连接
 			closeWebSocket() {
 				if (this.websocketTask) {
 					this.websocketTask.close();
+					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
 				}
+			},
+			// 开启心跳定时器
+			startHeartbeat() {
+				var self = this;
+				this.heartbeatTimer = setTimeout(function() {
+					self.sendHeartbeat();
+				}, 3000);	// 每3秒发送一次心跳消息
+			},
+			// 发送心跳消息
+			sendHeartbeat() {
+				console.log('WebSocket发送消息');
+				this.websocketTask.send({
+					data: '0'
+				});
 			},
 			// change1() {
 			// 	console.log("change1");

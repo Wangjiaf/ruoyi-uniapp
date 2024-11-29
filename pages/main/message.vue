@@ -201,12 +201,12 @@
 				});
 				this.websocketTask.onError((error) => {
 					console.error('WebSocket连接发生错误', JSON.stringify(error));
-					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					clearInterval(this.heartbeatTimer); 	// 清除心跳定时器
 					this.initWebSocket();
 				});
 				this.websocketTask.onClose(() => {
 					console.log('WebSocket已关闭');
-					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					clearInterval(this.heartbeatTimer); 	// 清除心跳定时器
 					this.initWebSocket();
 				});
 			},
@@ -214,15 +214,12 @@
 			closeWebSocket() {
 				if (this.websocketTask) {
 					this.websocketTask.close();
-					clearTimeout(this.heartbeatTimer); 	// 清除心跳定时器
+					clearInterval(this.heartbeatTimer); 	// 清除心跳定时器
 				}
 			},
 			// 开启心跳定时器
 			startHeartbeat() {
-				var self = this;
-				this.heartbeatTimer = setTimeout(function() {
-					self.sendHeartbeat();
-				}, 3000);	// 每3秒发送一次心跳消息
+				this.heartbeatTimer = setInterval(this.sendHeartbeat, 30000);	// 每30秒发送一次心跳消息
 			},
 			// 发送心跳消息
 			sendHeartbeat() {

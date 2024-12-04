@@ -103,6 +103,26 @@
     "style": {
       "navigationBarTitleText": "添加新朋友"
     }
+  }, {
+    "path": "pages/chat/addressBook/group",
+    "style": {
+      "navigationBarTitleText": "群组"
+    }
+  }, {
+    "path": "pages/chat/addressBook/group/createGroup",
+    "style": {
+      "navigationBarTitleText": "创建群组"
+    }
+  }, {
+    "path": "pages/chat/addressBook/group/joinGroup",
+    "style": {
+      "navigationBarTitleText": "加入群组"
+    }
+  }, {
+    "path": "pages/chat/message/chatGroupMessage",
+    "style": {
+      "navigationBarTitleText": "群组对话"
+    }
   }],
   "tabBar": {
     "color": "#000000",

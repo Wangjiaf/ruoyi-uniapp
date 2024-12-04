@@ -8,7 +8,7 @@
 						<img :src="item.userHeadImg" alt="" />
 					</div>
 					<div class="">
-						<!-- <div class="name" style="font-size: 10px;">{{ item.name }}</div> -->
+						<div class="name" style="font-size: 10px;">{{ item.name }}</div>
 						<div class="name" style="font-size: 10px;">{{ item.time }}</div>
 						<div class="message_l" :class="{message_left: true, message_right: false}" style="font-size: 14px;" v-if="item.userId != loginUser.userId">{{ item.content }}</div>
 						<div class="message_r" :class="{message_left: false, message_right: true}" style="font-size: 14px;" v-if="item.userId == loginUser.userId">{{ item.content }}</div>
@@ -20,27 +20,15 @@
 			</div>
 			<u-button type="primary" size="small" @click="send" text="发送" style="width: 40px; margin-right: 1%;"></u-button>
 			<u-input v-model="textarea" placeholder="请输入内容" style="background-color: azure;"></u-input>
-			<!-- <u--button @click="send" class="el-button">
-				<div style="margin-top: -5px; font-size: 15px;">发送</div>
-			</u--button> -->
-			<!-- <u-textarea v-model="textarea" placeholder="请输入内容" :safeAreaInsetBottom="true"></u-textarea> -->
-			<!-- <div class="message_input">
-				<u--input type="textarea" v-model="textarea" autofocus :autosize="{ minRows: 7, maxRows: 7 }" resize="none" @keyup.enter="keyDown($event)"></u--input>
-				<div style="width: 100%; display: flex; align-items: center; justify-content: flex-end; height: 60px;">
-					<button @click="send" class="el-button">
-						<div style="margin-top: -5px; font-size: 15px;">发送</div>
-					</button>
-				</div>
-			</div> -->
 		</div>
 	</div>
 </template>
 
 <script>
 	import {
-		listChatUserMessageVo,
-		sendChatUserMessage
-	} from "@/api/chat/chatUserMessage.js";
+		listChatGroupMessageVo,
+		sendChatGroupMessage
+	} from "@/api/chat/chatGroupMessage.js";
 	export default {
 		data() {
 			return {
@@ -73,14 +61,14 @@
 					},
 				],
 				loginUser: null,
-				relationUserId: null,
-				relationUserRemark: null,
+				groupId: null,
+				groupName: null,
 				heartbeatTimer: null,
 			};
 		},
 		onShow() {
 			uni.setNavigationBarTitle({
-				title: this.relationUserRemark
+				title: this.groupName
 			});
 		},
 		onLoad(option) {
@@ -88,12 +76,12 @@
 			var data = option.data;
 			var dataJson = JSON.parse(data);
 			uni.setNavigationBarTitle({
-				title: dataJson.relationUserRemark
+				title: dataJson.groupName
 			});
 			this.loginUser = uni.getStorageSync('user');
-			this.relationUserId = dataJson.relationUserId;
-			this.relationUserRemark = dataJson.relationUserRemark;
-			this.getChatUserMessageList();
+			this.groupId = dataJson.groupId;
+			this.groupName = dataJson.groupName;
+			this.getChatGroupMessageList();
 			this.initWebSocket();
 		},
 		onUnload() {
@@ -101,23 +89,23 @@
 			this.closeWebSocket();
 		},
 		methods: {
-			getChatUserMessageList() {
+			getChatGroupMessageList() {
 				let queryParams = {
 					pageNum: 1,
 					pageSize: 10000000,
+					groupId: this.groupId,
 					params: {
 						loginUserId: this.loginUser.userId,
-						relationUserId: this.relationUserId,
 					}
 				};
-				listChatUserMessageVo(queryParams).then(res => {
+				listChatGroupMessageVo(queryParams).then(res => {
 					if (200 == res.code) {
 						this.messageList = [];
 						for (var i = 0; i < res.rows.length; i++) {
 							var everyMessage = {
 								userHeadImg: res.rows[i].fromUser.avatar,
 								userId: res.rows[i].fromUserId,
-								name: res.rows[i].userId == this.loginUser.userId ? this.loginUser.nickName : this.relationUserRemark,
+								name: res.rows[i].fromUserRelation && res.rows[i].fromUserRelation.relationUserRemark ? res.rows[i].fromUserRelation.relationUserRemark : res.rows[i].fromUser.nickName,
 								content: res.rows[i].messageContent,
 								time: res.rows[i].createTime,
 							};
@@ -139,11 +127,11 @@
 			send() {
 				if (!this.textarea) return;
 				let subForm = {
+					groupId: this.groupId,
 					fromUserId: this.loginUser.userId,
-					toUserId: this.relationUserId,
 					messageContent: this.textarea
 				};
-				sendChatUserMessage(subForm).then(res => {
+				sendChatGroupMessage(subForm).then(res => {
 					if (!200 == res.code) {
 						this.$modal.msgError(res.msg);
 					} else {
@@ -187,7 +175,7 @@
 			},
 			// 初始化WebSocket连接
 			initWebSocket() {
-				const wsUrl = "ws://172.16.98.40:9210/chatUserMessageSocket/" + this.loginUser.userId;
+				const wsUrl = "ws://172.16.98.40:9210/chatGroupMessageSocket/" + this.loginUser.userId;
 				this.websocketTask = uni.connectSocket({
 					url: wsUrl,
 					header: {
@@ -210,7 +198,7 @@
 				});
 				this.websocketTask.onMessage((message) => {
 					console.log('收到服务器消息：', message.data);
-					this.getChatUserMessageList();
+					this.getChatGroupMessageList();
 					this.vibrate();
 				});
 				this.websocketTask.onError((error) => {

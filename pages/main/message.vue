@@ -58,6 +58,11 @@
 					<text slot="value" class="u-slot-value">{{item.createTime}}</text>
 					<text slot="value" class="u-slot-value" style="min-width: 18px; min-height: 18px; background-color: red; border-radius: 50%; color: aliceblue; text-align: center;" v-if="0 != item.unReadCount">{{item.unReadCount}}</text>
 				</u-cell>
+				<u-cell :title="item.tipFromChatGroup.groupName" :label="item.tipContent" @click="resetChatTipCount_goToChatMessage(item)" v-if="'G2P' == item.chatType">
+					<u-avatar slot="icon" shape="square" size="45" :src="item.tipFromChatGroup.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
+					<text slot="value" class="u-slot-value">{{item.createTime}}</text>
+					<text slot="value" class="u-slot-value" style="min-width: 18px; min-height: 18px; background-color: red; border-radius: 50%; color: aliceblue; text-align: center;" v-if="0 != item.unReadCount">{{item.unReadCount}}</text>
+				</u-cell>
 			</u-list-item>
 		</u-list>
 	</view>
@@ -107,8 +112,6 @@
 					} else {
 						this.$modal.msgError(res.msg);
 					}
-				}).catch(err => {
-					this.$modal.msgError(err);
 				});
 			},
 			// 消息提示列表触击事件全生命周期
@@ -148,6 +151,9 @@
 						if ('P2P' == chatTip.chatType) {
 							this.gotoChatUserMessage(chatTip);
 						}
+						if ('G2P' == chatTip.chatType) {
+							this.gotoChatGroupMessage(chatTip);
+						}
 					}
 				}).catch(err => {
 					this.$modal.msgError(err);
@@ -164,6 +170,18 @@
 				uni.navigateTo({
 					// url: '../chat/message/chatUserMessage?data=' + data
 					url: '../chat/message/chatUserMessage1?data=' + data
+				});
+			},
+			// 群聊
+			gotoChatGroupMessage(chatTip) {
+				let a = {
+					groupId: chatTip.tipFromId,
+					groupName: chatTip.tipFromChatGroup.groupName,
+					backLocation: 'pages/main/message'
+				};
+				let data = JSON.stringify(a);
+				uni.navigateTo({
+					url: '../chat/message/chatGroupMessage?data=' + data
 				});
 			},
 			// 初始化WebSocket连接
@@ -198,6 +216,7 @@
 					console.log('收到服务器消息：', message.data);
 					// 这里处理接收到的消息
 					this.getChatTipList();
+					this.vibrate();
 				});
 				this.websocketTask.onError((error) => {
 					console.error('WebSocket连接发生错误', JSON.stringify(error));
@@ -226,6 +245,14 @@
 				console.log('WebSocket发送消息');
 				this.websocketTask.send({
 					data: '0'
+				});
+			},
+			// 使手机发生较长时间的振动400ms
+			vibrate() {
+				uni.vibrateLong({
+					success: function() {
+						console.log('vibrate振动');
+					}
 				});
 			},
 			// change1() {

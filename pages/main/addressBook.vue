@@ -8,9 +8,9 @@
 				</view>
 			</u-index-item>
 			<u-index-item>
-				<view class="list-cell" @click="addNewGroup()">
+				<view class="list-cell" @click="groupFun()">
 					<u-avatar slot="icon" shape="square" size="35" src="../../static/images/chat/newGroup.png" customStyle="margin: -3px 5px -3px 0"></u-avatar>
-					<view style="margin-top: 4px; margin-left: 4px;">创建新群聊</view>
+					<view style="margin-top: 4px; margin-left: 4px;">群聊</view>
 				</view>
 			</u-index-item>
 		</u-index-list>
@@ -108,8 +108,10 @@
 					url: '../chat/addressBook/newFriend'
 				});
 			},
-			addNewGroup() {
-				console.log("addNewGroup");
+			groupFun() {
+				uni.navigateTo({
+					url: '../chat/addressBook/group'
+				});
 			},
 		},
 	}

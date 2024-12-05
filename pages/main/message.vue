@@ -58,8 +58,8 @@
 					<text slot="value" class="u-slot-value">{{item.createTime}}</text>
 					<text slot="value" class="u-slot-value" style="min-width: 18px; min-height: 18px; background-color: red; border-radius: 50%; color: aliceblue; text-align: center;" v-if="0 != item.unReadCount">{{item.unReadCount}}</text>
 				</u-cell>
-				<u-cell :title="item.tipFromChatGroup.groupName" :label="item.tipContent" @click="resetChatTipCount_goToChatMessage(item)" v-if="'G2P' == item.chatType">
-					<u-avatar slot="icon" shape="square" size="45" :src="item.tipFromChatGroup.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
+				<u-cell :title="item.tipFromChatGroupVo.groupName" :label="item.tipContent" @click="resetChatTipCount_goToChatMessage(item)" v-if="'G2P' == item.chatType">
+					<u-avatar slot="icon" shape="square" size="45" :src="item.tipFromChatGroupVo.avatar" customStyle="margin: -3px 5px -3px 0"></u-avatar>
 					<text slot="value" class="u-slot-value">{{item.createTime}}</text>
 					<text slot="value" class="u-slot-value" style="min-width: 18px; min-height: 18px; background-color: red; border-radius: 50%; color: aliceblue; text-align: center;" v-if="0 != item.unReadCount">{{item.unReadCount}}</text>
 				</u-cell>
@@ -176,7 +176,8 @@
 			gotoChatGroupMessage(chatTip) {
 				let a = {
 					groupId: chatTip.tipFromId,
-					groupName: chatTip.tipFromChatGroup.groupName,
+					groupName: chatTip.tipFromChatGroupVo.groupName,
+					groupUserCount: chatTip.tipFromChatGroupVo.groupUserCount,
 					backLocation: 'pages/main/message'
 				};
 				let data = JSON.stringify(a);

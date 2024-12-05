@@ -43,6 +43,15 @@ export function delChatGroup(id) {
   })
 }
 
+// 查询群组主数据视图列表
+export function listChatGroupVo(query) {
+  return request({
+    url: '/chat/chatGroup/listVo',
+    method: 'get',
+    params: query
+  })
+}
+
 // 创建新群组
 export function addGroup(data) {
   return request({

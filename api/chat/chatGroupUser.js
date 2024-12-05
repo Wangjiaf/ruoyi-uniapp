@@ -42,3 +42,12 @@ export function delChatGroupUser(id) {
     method: 'delete'
   })
 }
+
+// 添加群成员
+export function addGroupUser(data) {
+  return request({
+    url: '/chat/chatGroupUser/addGroupUser',
+    method: 'post',
+    data: data
+  })
+}

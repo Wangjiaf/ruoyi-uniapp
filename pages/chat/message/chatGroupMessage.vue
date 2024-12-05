@@ -8,8 +8,7 @@
 						<img :src="item.userHeadImg" alt="" />
 					</div>
 					<div class="">
-						<div class="name" style="font-size: 10px;">{{ item.name }}</div>
-						<div class="name" style="font-size: 10px;">{{ item.time }}</div>
+						<div class="name" style="font-size: 10px;">{{ item.name }} {{ item.time }}</div>
 						<div class="message_l" :class="{message_left: true, message_right: false}" style="font-size: 14px;" v-if="item.userId != loginUser.userId">{{ item.content }}</div>
 						<div class="message_r" :class="{message_left: false, message_right: true}" style="font-size: 14px;" v-if="item.userId == loginUser.userId">{{ item.content }}</div>
 					</div>
@@ -68,7 +67,7 @@
 		},
 		onShow() {
 			uni.setNavigationBarTitle({
-				title: this.groupName
+				title: this.groupName + '(' + dataJson.groupUserCount + ')'
 			});
 		},
 		onLoad(option) {
@@ -76,7 +75,7 @@
 			var data = option.data;
 			var dataJson = JSON.parse(data);
 			uni.setNavigationBarTitle({
-				title: dataJson.groupName
+				title: dataJson.groupName + '(' + dataJson.groupUserCount + ')'
 			});
 			this.loginUser = uni.getStorageSync('user');
 			this.groupId = dataJson.groupId;
@@ -87,6 +86,16 @@
 		onUnload() {
 			console.log("执行了onUnload");
 			this.closeWebSocket();
+		},
+		onNavigationBarButtonTap(e) {
+			let a = {
+				groupId: this.groupId,
+				groupName: this.groupName,
+			};
+			let data = JSON.stringify(a);
+			uni.navigateTo({
+				url: '../addressBook/group/addGroupUser?data=' + data
+			})
 		},
 		methods: {
 			getChatGroupMessageList() {

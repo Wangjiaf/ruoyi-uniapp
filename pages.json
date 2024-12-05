@@ -119,8 +119,27 @@
       "navigationBarTitleText": "加入群组"
     }
   }, {
+    "path": "pages/chat/addressBook/group/addGroupUser",
+    "style": {
+      "navigationBarTitleText": "添加群成员"
+    }
+  }, {
     "path": "pages/chat/message/chatGroupMessage",
     "style": {
+			"app-plus": {
+				"titleNView": {
+					"buttons": [ // 右侧操作按钮样式定义,是以数组形式定义，可定义多个
+						{
+							"text": "+",
+							"type": "none",
+							"color": "#E8B36F",
+							// "background": "#000000",
+							// "fontSrc": "/static/iconfont.ttf",
+							"fontSize": "16px"
+						}
+					]
+				}
+			},
       "navigationBarTitleText": "群组对话"
     }
   }],

@@ -16,7 +16,7 @@
 
 <script>
 	import {
-		listChatGroup
+		listChatGroupVo
 	} from "@/api/chat/chatGroup.js";
 	export default {
 		data() {
@@ -38,7 +38,7 @@
 					pageSize: 10000000,
 					userId: this.loginUser.userId
 				};
-				listChatGroup(queryParams).then(res => {
+				listChatGroupVo(queryParams).then(res => {
 					if (200 == res.code) {
 						this.chatGroupList = [];
 						this.chatGroupList.push(res.rows);
@@ -57,6 +57,7 @@
 				let a = {
 					groupId: cell.groupId,
 					groupName: cell.groupName,
+					groupUserCount: cell.groupUserCount,
 					// avatar: cell.avatar
 				};
 				let data = JSON.stringify(a);

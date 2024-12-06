@@ -62,12 +62,13 @@
 				loginUser: null,
 				groupId: null,
 				groupName: null,
+				groupUserCount: null,
 				heartbeatTimer: null,
 			};
 		},
 		onShow() {
 			uni.setNavigationBarTitle({
-				title: this.groupName + '(' + dataJson.groupUserCount + ')'
+				title: this.groupName + '(' + this.groupUserCount + ')'
 			});
 		},
 		onLoad(option) {
@@ -80,6 +81,7 @@
 			this.loginUser = uni.getStorageSync('user');
 			this.groupId = dataJson.groupId;
 			this.groupName = dataJson.groupName;
+			this.groupUserCount = dataJson.groupUserCount;
 			this.getChatGroupMessageList();
 			this.initWebSocket();
 		},

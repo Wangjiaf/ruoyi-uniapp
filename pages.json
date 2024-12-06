@@ -130,7 +130,7 @@
 				"titleNView": {
 					"buttons": [ // 右侧操作按钮样式定义,是以数组形式定义，可定义多个
 						{
-							"text": "+",
+							"text": "···",
 							"type": "none",
 							"color": "#E8B36F",
 							// "background": "#000000",

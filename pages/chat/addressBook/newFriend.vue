@@ -29,6 +29,16 @@
 				},
 			};
 		},
+		onShow() {
+			this.$nfc.readNFC(this.nfcListen);
+		},
+		onLoad() {
+			this.$scan.initScan(this.scanListen);
+			this.$scan.startScan();
+		},
+		onUnload() {
+			this.$scan.stopScan();
+		},
 		methods: {
 			subFun() {
 				this.$refs["uForm"].validate().then(valid => {
@@ -42,6 +52,10 @@
 						});
 					}
 				});
+			},
+			scanListen(code) {
+			},
+			nfcListen(code) {
 			}
 		},
 	}

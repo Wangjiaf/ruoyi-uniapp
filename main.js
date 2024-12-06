@@ -14,6 +14,14 @@ App.mpType = 'app'
 import uView from 'node_modules/uview-ui';
 Vue.use(uView);
 
+/** 引入扫码 */
+import scan from '@/utils/scan.js';
+Vue.prototype.$scan = scan;
+
+/** 引入识别NFC */
+import nfc from '@/utils/nfc.js';
+Vue.prototype.$nfc = nfc;
+
 const app = new Vue({
   ...App
 })

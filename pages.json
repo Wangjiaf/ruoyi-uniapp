@@ -89,6 +89,26 @@
       "navigationBarTitleText": "浏览文本"
     }
   }, {
+    "path": "pages/mine/demo/index",
+    "style": {
+      "navigationBarTitleText": "标准Demo"
+    }
+  }, {
+    "path": "pages/mine/demo/icCard",
+    "style": {
+      "navigationBarTitleText": "IC卡"
+    }
+  }, {
+    "path": "pages/mine/demo/miCard",
+    "style": {
+      "navigationBarTitleText": "MI卡"
+    }
+  }, {
+    "path": "pages/mine/demo/qrCode",
+    "style": {
+      "navigationBarTitleText": "二维码"
+    }
+  }, {
     "path": "pages/chat/message/chatUserMessage",
     "style": {
       "navigationBarTitleText": "消息对话"

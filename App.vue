@@ -16,6 +16,8 @@
         //#ifdef H5
         this.checkLogin()
         //#endif
+				// 初始化IC卡监听
+				this.$nfc.initNFC();
       },
       initConfig() {
         this.globalData.config = config

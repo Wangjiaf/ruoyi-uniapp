@@ -70,6 +70,12 @@
             <view>应用设置</view>
           </view>
         </view>
+				<view class="list-cell list-cell-arrow" @click="handleToDemo">
+				  <view class="menu-item-box">
+				    <view class="iconfont icon-github menu-icon"></view>
+				    <view>标准Demo</view>
+				  </view>
+				</view>
       </view>
 
     </view>
@@ -103,6 +109,9 @@
       },
       handleToSetting() {
         this.$tab.navigateTo('/pages/mine/setting/index')
+      },
+			handleToDemo() {
+        this.$tab.navigateTo('/pages/mine/demo/index')
       },
       handleToLogin() {
         this.$tab.reLaunch('/pages/login')
